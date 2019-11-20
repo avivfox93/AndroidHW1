@@ -26,7 +26,6 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
     public static final long GAME_SPEED_FAST = 750, GAME_SPEED_SLOW = 1500, GAME_SPEED_NORMAL = 1000;
     public static final int NUM_OF_LANES = 3;
     public static final int NUM_OF_ROWS = 4;
-    private float[] rotationMatrix = new float[16];
     private ImageView[][] roadObjects = new ImageView[NUM_OF_ROWS + 1][NUM_OF_LANES];
     private GridLayout gridLayout;
     private Button leftBtn,rightBtn,restartButton,exitButton;
@@ -107,31 +106,28 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
             hearts[i].setVisibility(View.VISIBLE);
             heartsLayout.addView(hearts[i]);
         }
-        backgroundRunnable = new TimerTask() {
-            @Override
-            public void run() {
-                if(!nowPlaying)
-                    return;
-                runOnUiThread(()->{
-                    int newPos = (int)(Math.random()*(NUM_OF_LANES+1));
-                    for(int i = 0 ; i < NUM_OF_LANES ; i++){
-                        Bottle obj = (Bottle)roadObjects[NUM_OF_ROWS-1][i];
-                        if(obj.getVisibility() == View.VISIBLE && carPos == i){
-                            if(obj.collide() > 0) coins++;
-                            else lives--;
-                        }
-                        obj.setVisibility(View.INVISIBLE);
+        backgroundRunnable = () -> {
+            if(!nowPlaying)
+                return;
+            runOnUiThread(()->{
+                int newPos = (int)(Math.random()*(NUM_OF_LANES+1));
+                for(int i = 0 ; i < NUM_OF_LANES ; i++){
+                    Bottle obj = (Bottle)roadObjects[NUM_OF_ROWS-1][i];
+                    if(obj.getVisibility() == View.VISIBLE && carPos == i){
+                        if(obj.collide() > 0) coins++;
+                        else lives--;
                     }
-                    for(int i = NUM_OF_ROWS - 1 ; i > 0 ; i--)
-                        for(int j = 0 ; j < NUM_OF_LANES ; j++)
-                            roadObjects[i][j].setVisibility(roadObjects[i-1][j].getVisibility());
-                    for(int i = 0 ; i < NUM_OF_LANES ; i++){
-                        roadObjects[0][i].setVisibility(newPos == i ? View.VISIBLE : View.INVISIBLE);
-                    }
-                    updateLives();
-                    mHandler.postDelayed(backgroundRunnable,gameSpeed);
-                });
-            }
+                    obj.setVisibility(View.INVISIBLE);
+                }
+                for(int i = NUM_OF_ROWS - 1 ; i > 0 ; i--)
+                    for(int j = 0 ; j < NUM_OF_LANES ; j++)
+                        roadObjects[i][j].setVisibility(roadObjects[i-1][j].getVisibility());
+                for(int i = 0 ; i < NUM_OF_LANES ; i++){
+                    roadObjects[0][i].setVisibility(newPos == i ? View.VISIBLE : View.INVISIBLE);
+                }
+                updateLives();
+                mHandler.postDelayed(backgroundRunnable,gameSpeed);
+            });
         };
         mHandler.postDelayed(backgroundRunnable,gameSpeed);
     }
