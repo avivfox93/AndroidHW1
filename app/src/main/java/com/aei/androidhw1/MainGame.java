@@ -7,6 +7,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -16,8 +17,6 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.TimerTask;
 
 
 public class MainGame extends AppCompatActivity implements SensorEventListener {
@@ -39,11 +38,14 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
     private SensorManager sensorManager;
     private final Handler mHandler = new Handler();
     private boolean nowPlaying = true;
+    private MediaPlayer backgroundPlayer, colidePlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_game);
+        backgroundPlayer = MediaPlayer.create(this, R.raw.the_entertainer_8_bit);
+        colidePlayer = MediaPlayer.create(this, R.raw.vodka_colide_sound);
         leftBtn = findViewById(R.id.TurnLeftBtn);
         rightBtn = findViewById(R.id.TurnRightBtn);
         restartButton = findViewById(R.id.RestartButton);
@@ -90,10 +92,13 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
 
     private void stopGame(){
         nowPlaying = false;
+        backgroundPlayer.pause();
+        backgroundPlayer.seekTo(0);
         showEndGameWindow(true);
     }
 
     private void startGame(){
+        backgroundPlayer.start();
         nowPlaying = true;
         lives = NUM_OF_LIVES;
         initGrid();
@@ -114,6 +119,7 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
                 for(int i = 0 ; i < NUM_OF_LANES ; i++){
                     Bottle obj = (Bottle)roadObjects[NUM_OF_ROWS-1][i];
                     if(obj.getVisibility() == View.VISIBLE && carPos == i){
+                        colidePlayer.start();
                         if(obj.collide() > 0) coins++;
                         else lives--;
                     }
@@ -214,5 +220,16 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
         // Register this class as a listener for the accelerometer sensor
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        nowPlaying = false;
+        backgroundPlayer.stop();
+        backgroundPlayer.reset();
+        colidePlayer.stop();
+        colidePlayer.reset();
+
     }
 }
