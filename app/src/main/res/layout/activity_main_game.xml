@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sand_texture"
+    android:layoutDirection="ltr"
+    android:keepScreenOn="true"
+    tools:context=".MainGame">
+
+    <GridLayout
+        android:id="@+id/GameGrid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitXY"
+        android:layout_marginBottom="150dp"
+        android:gravity="center">
+    </GridLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="#D3D0D0"/>
+
+    <LinearLayout
+        android:id="@+id/HeartsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal"/>
+    <LinearLayout
+        android:id="@+id/ArakLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:layout_marginLeft="15dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="27dp"
+            android:textSize="25sp"
+            android:text="0X"/>
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="90dp"
+            android:src="@drawable/ic_vodka"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:padding="20dp"
+        android:layout_marginTop="600dp">
+        <Button
+            android:id="@+id/TurnLeftBtn"
+            android:layout_width="150dp"
+            android:layout_height="70dp"
+            android:text="Left"
+            android:textSize="35sp"/>
+        <Button
+            android:id="@+id/TurnRightBtn"
+            android:layout_width="150dp"
+            android:layout_height="70dp"
+            android:text="Right"
+            android:textSize="35sp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/GameOverText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Game Over!"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="250dp"
+        android:textSize="60sp"
+        android:fontFamily="@font/sea_gardens"
+        android:visibility="invisible"/>
+    <Button
+        android:id="@+id/RestartButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Restart"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/GameOverText"
+        android:backgroundTint="#4400FF0C"
+        android:layout_marginTop="20dp"
+        android:textSize="40sp"
+        android:visibility="invisible"
+        />
+    <Button
+        android:id="@+id/ExitButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Exit"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/RestartButton"
+        android:backgroundTint="#44FF0000"
+        android:layout_marginTop="10dp"
+        android:textSize="40sp"
+        android:visibility="invisible"
+        />
+
+
+</RelativeLayout>
