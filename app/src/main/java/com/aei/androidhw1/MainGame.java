@@ -214,8 +214,5 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
         // Register this class as a listener for the accelerometer sensor
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
-        // ...and the orientation sensor
-        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
-                SensorManager.SENSOR_DELAY_NORMAL);
     }
 }
