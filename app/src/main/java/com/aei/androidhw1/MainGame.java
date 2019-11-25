@@ -19,6 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+
 public class MainGame extends AppCompatActivity implements SensorEventListener {
 
     public static final int NUM_OF_LIVES = 3;
@@ -27,27 +32,33 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
     public static final int NUM_OF_ROWS = 4;
     private ImageView[][] roadObjects = new ImageView[NUM_OF_ROWS + 1][NUM_OF_LANES];
     private GridLayout gridLayout;
-    private Button leftBtn,rightBtn,restartButton,exitButton;
+    private Button restartButton;
+    private Button exitButton;
     private int carPos = NUM_OF_LANES/2;
-    private Runnable backgroundRunnable;
+    private Runnable backgroundRunnable, gameTimerRunnable;
     private long gameSpeed ;
     private int lives = NUM_OF_LIVES, coins = 0;
-    private LinearLayout heartsLayout;
     private ImageView[] hearts = new ImageView[3];
     private TextView gameOverText;
     private SensorManager sensorManager;
     private final Handler mHandler = new Handler();
     private boolean nowPlaying = true;
     private MediaPlayer backgroundPlayer, colidePlayer;
+    private long secondsPlayed = 0;
+
+    private enum Direction{
+        LEFT,RIGHT
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_game);
         backgroundPlayer = MediaPlayer.create(this, R.raw.the_entertainer_8_bit);
+        backgroundPlayer.setLooping(true);
         colidePlayer = MediaPlayer.create(this, R.raw.vodka_colide_sound);
-        leftBtn = findViewById(R.id.TurnLeftBtn);
-        rightBtn = findViewById(R.id.TurnRightBtn);
+        Button leftBtn = findViewById(R.id.TurnLeftBtn);
+        Button rightBtn = findViewById(R.id.TurnRightBtn);
         restartButton = findViewById(R.id.RestartButton);
         exitButton = findViewById(R.id.ExitButton);
         gameOverText = findViewById(R.id.GameOverText);
@@ -77,8 +88,8 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
             leftBtn.setVisibility(View.INVISIBLE);
             rightBtn.setVisibility(View.INVISIBLE);
         }else{
-            leftBtn.setOnClickListener(e->moveCar(true));
-            rightBtn.setOnClickListener(e->moveCar(false));
+            leftBtn.setOnClickListener(e->moveCar(Direction.LEFT));
+            rightBtn.setOnClickListener(e->moveCar(Direction.RIGHT));
         }
         startGame();
     }
@@ -101,9 +112,10 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
         backgroundPlayer.start();
         nowPlaying = true;
         lives = NUM_OF_LIVES;
+        ((TextView)findViewById(R.id.TimerText)).setText("00:00");
         initGrid();
         roadObjects[NUM_OF_ROWS][carPos].setVisibility(View.VISIBLE);
-        heartsLayout = findViewById(R.id.HeartsLayout);
+        LinearLayout heartsLayout = findViewById(R.id.HeartsLayout);
         heartsLayout.removeAllViews();
         for(int i = 0 ; i < hearts.length ; i++) {
             hearts[i] = new ImageView(this);
@@ -136,6 +148,19 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
             });
         };
         mHandler.postDelayed(backgroundRunnable,gameSpeed);
+        secondsPlayed = 0;
+        gameTimerRunnable = ()->{
+            if(!nowPlaying)
+                return;
+            secondsPlayed++;
+            runOnUiThread(()->{
+                Date d = new Date(secondsPlayed*1000);
+                SimpleDateFormat formatter= new SimpleDateFormat("mm:ss", Locale.ENGLISH);
+                ((TextView)findViewById(R.id.TimerText)).setText(formatter.format(d));
+            });
+            mHandler.postDelayed(gameTimerRunnable,1000);
+        };
+        mHandler.postDelayed(gameTimerRunnable,1000);
     }
 
     private void updateLives(){
@@ -179,13 +204,13 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
         }
     }
 
-    private void moveCar(boolean left){
-        if(carPos <= 0 && left)
+    private void moveCar(Direction dir){
+        if(carPos <= 0 && (dir == Direction.LEFT))
             carPos = 0;
-        else if(carPos >= (NUM_OF_LANES-1) && !left)
+        else if(carPos >= (NUM_OF_LANES-1) && (dir == Direction.RIGHT))
             carPos = NUM_OF_LANES-1;
         else{
-            roadObjects[NUM_OF_ROWS][left ? carPos--:carPos++].setVisibility(View.INVISIBLE);
+            roadObjects[NUM_OF_ROWS][(dir == Direction.LEFT) ? carPos--:carPos++].setVisibility(View.INVISIBLE);
             roadObjects[NUM_OF_ROWS][carPos].setVisibility(View.VISIBLE);
         }
     }
@@ -197,9 +222,9 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
         int side = (int) event.values[0];
         int speed = (int) event.values[1];
         if(side >= 3)
-            moveCar(true);
+            moveCar(Direction.LEFT);
         else if(side <= -3)
-            moveCar(false);
+            moveCar(Direction.RIGHT);
         if(speed > 10)
             gameSpeed = GAME_SPEED_FAST;
         else if(speed < -10)

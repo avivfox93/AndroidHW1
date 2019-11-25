@@ -20,9 +20,13 @@
     </GridLayout>
 
     <TextView
+        android:id="@+id/TimerText"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        android:background="#D3D0D0"/>
+        android:background="#D3D0D0"
+        android:text="00:00"
+        android:textSize="26sp"
+        android:gravity="center"/>
 
     <LinearLayout
         android:id="@+id/HeartsLayout"
@@ -43,11 +47,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="27dp"
             android:textSize="25sp"
-            android:text="0X"/>
+            android:text="0X"
+            android:visibility="invisible"/>
         <ImageView
             android:layout_width="60dp"
             android:layout_height="90dp"
-            android:src="@drawable/ic_vodka"/>
+            android:src="@drawable/ic_vodka"
+            android:visibility="invisible"/>
     </LinearLayout>
 
     <LinearLayout
