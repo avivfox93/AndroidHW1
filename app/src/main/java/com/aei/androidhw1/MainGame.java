@@ -43,7 +43,7 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
     private SensorManager sensorManager;
     private final Handler mHandler = new Handler();
     private boolean nowPlaying = true;
-    private MediaPlayer backgroundPlayer, colidePlayer;
+    private MediaPlayer backgroundPlayer, collidePlayer;
     private long secondsPlayed = 0;
 
     private enum Direction{
@@ -56,7 +56,7 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
         setContentView(R.layout.activity_main_game);
         backgroundPlayer = MediaPlayer.create(this, R.raw.the_entertainer_8_bit);
         backgroundPlayer.setLooping(true);
-        colidePlayer = MediaPlayer.create(this, R.raw.vodka_colide_sound);
+        collidePlayer = MediaPlayer.create(this, R.raw.vodka_colide_sound);
         Button leftBtn = findViewById(R.id.TurnLeftBtn);
         Button rightBtn = findViewById(R.id.TurnRightBtn);
         restartButton = findViewById(R.id.RestartButton);
@@ -131,7 +131,7 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
                 for(int i = 0 ; i < NUM_OF_LANES ; i++){
                     Bottle obj = (Bottle)roadObjects[NUM_OF_ROWS-1][i];
                     if(obj.getVisibility() == View.VISIBLE && carPos == i){
-                        colidePlayer.start();
+                        collidePlayer.start();
                         if(obj.collide() > 0) coins++;
                         else lives--;
                     }
@@ -253,8 +253,8 @@ public class MainGame extends AppCompatActivity implements SensorEventListener {
         nowPlaying = false;
         backgroundPlayer.stop();
         backgroundPlayer.reset();
-        colidePlayer.stop();
-        colidePlayer.reset();
+        collidePlayer.stop();
+        collidePlayer.reset();
 
     }
 }
