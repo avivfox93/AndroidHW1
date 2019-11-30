@@ -28,7 +28,10 @@ public class MySharedPrefs {
     public int getInt(String key, int def){
         return prefs.getInt(key,def);
     }
-    public boolean getString(String key, boolean def){
+    public boolean getBoolean(String key, boolean def){
         return prefs.getBoolean(key,def);
+    }
+    public void removeKey(String key){
+        prefs.edit().remove(key).apply();
     }
 }

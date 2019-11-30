@@ -8,25 +8,41 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    enum GameType{
-        FAST,SLOW,TILT
+    enum GameSpeed {
+        FAST, NORMAL, SLOW
+    }
 
-        }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button startFast = findViewById(R.id.FastBtn);
-        Button startSlow = findViewById(R.id.SlowBtn);
-        Button startTilt = findViewById(R.id.TiltBtn);
-        startFast.setOnClickListener(e->startGame(GameType.FAST));
-        startSlow.setOnClickListener(e->startGame(GameType.SLOW));
-        startTilt.setOnClickListener(e->startGame(GameType.TILT));
+        Button startBtn = findViewById(R.id.start_btn);
+        Button settingsBtn = findViewById(R.id.settings_btn);
+        Button scoreBoardBtn = findViewById(R.id.score_board_btn);
+        startBtn.setOnClickListener(e -> startGame(GameSpeed.valueOf(MyApp.getPrefs()
+                .getString(getString(R.string.speed_prefs),getString(R.string.default_speed))),
+                MyApp.getPrefs().getBoolean(getString(R.string.sound_mode_prefs),false),
+                MyApp.getPrefs().getBoolean(getString(R.string.tilt_mode_prefs),false)));
+        settingsBtn.setOnClickListener(e->openSettings());
+        scoreBoardBtn.setOnClickListener(e->openScoreBoard());
     }
 
-    private void startGame(GameType type){
-        Intent intent = new Intent(this,MainGame.class);
-        intent.putExtra("gameType",type);
+    private void startGame(GameSpeed type, boolean sound, boolean tilt) {
+        Intent intent = new Intent(this, MainGameActivity.class);
+        intent.putExtra(getString(R.string.speed_prefs), type);
+        intent.putExtra(getString(R.string.sound_mode_prefs),sound);
+        intent.putExtra(getString(R.string.tilt_mode_prefs),tilt);
+        startActivity(intent);
+    }
+
+    private void openSettings(){
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+
+    private void openScoreBoard(){
+        Intent intent = new Intent(this, ScoreBoard.class);
         startActivity(intent);
     }
 }

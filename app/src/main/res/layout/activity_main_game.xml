@@ -7,7 +7,7 @@
     android:background="@drawable/sand_texture"
     android:layoutDirection="ltr"
     android:keepScreenOn="true"
-    tools:context=".MainGame">
+    tools:context=".MainGameActivity">
 
     <GridLayout
         android:id="@+id/GameGrid"
@@ -29,14 +29,14 @@
         android:gravity="center"/>
 
     <LinearLayout
-        android:id="@+id/HeartsLayout"
+        android:id="@+id/hearts_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
         android:layout_marginTop="25dp"
         android:orientation="horizontal"/>
     <LinearLayout
-        android:id="@+id/ArakLayout"
+        android:id="@+id/arak_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="left"
@@ -64,13 +64,13 @@
         android:padding="20dp"
         android:layout_marginTop="600dp">
         <Button
-            android:id="@+id/TurnLeftBtn"
+            android:id="@+id/turn_left_btn"
             android:layout_width="150dp"
             android:layout_height="70dp"
             android:text="Left"
             android:textSize="35sp"/>
         <Button
-            android:id="@+id/TurnRightBtn"
+            android:id="@+id/turn_right_btn"
             android:layout_width="150dp"
             android:layout_height="70dp"
             android:text="Right"
@@ -78,7 +78,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/GameOverText"
+        android:id="@+id/game_over_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Game Over!"
@@ -88,24 +88,24 @@
         android:fontFamily="@font/sea_gardens"
         android:visibility="invisible"/>
     <Button
-        android:id="@+id/RestartButton"
+        android:id="@+id/restart_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Restart"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/GameOverText"
+        android:layout_below="@id/game_over_text"
         android:backgroundTint="#4400FF0C"
         android:layout_marginTop="20dp"
         android:textSize="40sp"
         android:visibility="invisible"
         />
     <Button
-        android:id="@+id/ExitButton"
+        android:id="@+id/exit_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Exit"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/RestartButton"
+        android:layout_below="@id/restart_btn"
         android:backgroundTint="#44FF0000"
         android:layout_marginTop="10dp"
         android:textSize="40sp"

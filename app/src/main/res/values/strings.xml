@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Arak Racers</string>
+    <string name="tilt_mode_prefs">tiltMode</string>
+    <string name="sound_mode_prefs">soundMode</string>
+    <string name="speed_prefs">speed</string>
+    <string name="default_speed">NORMAL</string>
+    <string name="score_prefs">scores</string>
 </resources>
