@@ -5,19 +5,32 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:layoutDirection="ltr"
-    android:padding="10dp" >
+    android:gravity="center_horizontal"
+    android:padding="20dp" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="You Entered the Score Board!"
+        android:padding="20dp"
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Please Enter Your Name"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:text="Please Enter Your Name:"
+        android:padding="20dp"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
         android:id="@+id/editTextDialogUserInput"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:gravity="center"
         android:inputType="textPersonName">
 
         <requestFocus />

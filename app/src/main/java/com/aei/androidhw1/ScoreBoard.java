@@ -30,7 +30,7 @@ public class ScoreBoard extends AppCompatActivity {
             TableRow row = new TableRow(this);
             TextView place = new TextView(this);
             place.setTextSize(30);
-            place.setText(Integer.toString(i+1));
+            place.setText(String.format(Locale.ENGLISH,"(%d)",i+1));
             row.addView(place);
             TextView name = new TextView(this);
             name.setPadding(25,5,25,5);

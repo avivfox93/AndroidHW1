@@ -138,7 +138,7 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
                 scores.add(score);
                 ScoreBoard.saveScoreList(this,scores);
                 openScoreBoard();
-            }).setTitle("congratulations!").create().show();
+            }).create().show();
         }
     }
 
