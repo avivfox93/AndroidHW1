@@ -1,13 +1,40 @@
 package com.aei.androidhw1;
 
 import android.animation.Animator;
+import android.content.Context;
 import android.media.MediaPlayer;
+import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
 
-public class Car {
-    private ImageView[] lanes,hearts;
+public class Car extends GameObject{
+    public Car(Context context) {
+        super(context);
+        init();
+    }
+
+    public Car(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
+    public Car(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    private void init(){
+        this.setImageResource(R.drawable.pickup_truck);
+        this.setScaleType(ImageView.ScaleType.CENTER);
+        this.setForegroundGravity(Gravity.CENTER);
+    }
+}
+
+class CarController {
+    private GameObject[] lanes;
+    private Heart[] hearts;
     private int pos,lives,coins;
     private MediaPlayer collideSound;
 
@@ -15,7 +42,7 @@ public class Car {
         RIGHT,LEFT
     }
 
-    public Car(ImageView[] lanes, ImageView[] hearts, MediaPlayer collideSound){
+    public CarController(GameObject[] lanes, Heart[] hearts, MediaPlayer collideSound){
         this.lanes = lanes;
         this.hearts = hearts;
         this.collideSound = collideSound;

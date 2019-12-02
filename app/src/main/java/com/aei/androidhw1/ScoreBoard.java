@@ -6,13 +6,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -49,7 +46,6 @@ public class ScoreBoard extends AppCompatActivity {
 
     public static ArrayList<Score> getScoreList(Context cntx){
         String scoresStr = MyApp.getPrefs().getString(cntx.getString(R.string.score_prefs),"");
-        Log.e("scoreList",scoresStr);
         ArrayList<Score> scoreList = new ArrayList<>();
         if(scoresStr.isEmpty())
             return scoreList;
@@ -91,14 +87,9 @@ class Score implements Comparable<Score>{
         return this.name + ":" + this.time;
     }
 
-    public String prettyPrint(){
-        SimpleDateFormat formatter= new SimpleDateFormat("mm:ss", Locale.ENGLISH);
-        return String.format(Locale.ENGLISH,"%15s %-4 s",this.name,formatter.format(new Date(time*1000)));
-    }
 
     public String getPrettyTime(){
-        SimpleDateFormat formatter= new SimpleDateFormat("mm:ss", Locale.ENGLISH);
-        return formatter.format(new Date(time*1000));
+        return MyApp.getDateFormatter().format(new Date(time*1000));
     }
 
     @Override

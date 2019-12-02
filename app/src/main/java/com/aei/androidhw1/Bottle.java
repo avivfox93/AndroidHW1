@@ -1,35 +1,29 @@
 package com.aei.androidhw1;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
-@SuppressLint("AppCompatCustomView")
-public class Bottle extends ImageView {
+public class Bottle extends GameObject {
 
     private int collidePower;
 
     public Bottle(Context context) {
         super(context);
+        init();
     }
 
     public Bottle(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public Bottle(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
-
-    public Bottle(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    public int collide(){
-        return this.collidePower;
+        init();
     }
 
     public void setAsArak(){
@@ -44,6 +38,12 @@ public class Bottle extends ImageView {
 
     public boolean isVodka(){
         return collidePower == -1;
+    }
+
+    private void init(){
+        this.setForegroundGravity(Gravity.CENTER);
+        this.setScaleType(ImageView.ScaleType.CENTER);
+        this.setRotation((float)(Math.random()*20 - 10));
     }
 }
 
