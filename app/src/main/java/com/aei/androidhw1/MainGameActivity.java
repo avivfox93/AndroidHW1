@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -94,9 +95,7 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
             rightBtn.setVisibility(View.INVISIBLE);
         }else{
             leftBtn.setOnTouchListener(arrowOnTouchListener(CarController.Direction.LEFT));
-//            leftBtn.setOnClickListener(e-> carController.move(CarController.Direction.LEFT));
             rightBtn.setOnTouchListener(arrowOnTouchListener(CarController.Direction.RIGHT));
-//            rightBtn.setOnClickListener(e-> carController.move(CarController.Direction.RIGHT));
         }
         boolean sound = getIntent().getBooleanExtra(getString(R.string.sound_mode_prefs),true);
         if(!sound){
@@ -113,9 +112,8 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
         heartsLayout.removeAllViews();
         for(int i = 0 ; i < hearts.length ; i++) {
             hearts[i] = new Heart(this);
-            hearts[i].setImageResource(R.drawable.ic_love_heart_svg);
-            hearts[i].setVisibility(View.VISIBLE);
             heartsLayout.addView(hearts[i]);
+            hearts[i].setVisible(true);
         }
     }
 
@@ -222,6 +220,10 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
                 GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
                 layoutParams.rowSpec = GridLayout.spec(i,1,GridLayout.CENTER,1);
                 layoutParams.columnSpec = GridLayout.spec(j,1,GridLayout.CENTER,1);
+                layoutParams.height = TableLayout.LayoutParams.WRAP_CONTENT;
+                layoutParams.width = TableLayout.LayoutParams.WRAP_CONTENT;
+                layoutParams.rightMargin = 5;
+                layoutParams.topMargin = 5;
                 Bottle bottle = new Bottle(this);
                 bottle.setAsVodka();
                 roadObjects[i][j] = bottle;

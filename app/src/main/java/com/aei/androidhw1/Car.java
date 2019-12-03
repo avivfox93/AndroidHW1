@@ -84,31 +84,7 @@ class CarController {
             int temp = --lives;
             if(temp < 0)
                 return;
-            hearts[hearts.length - lives - 1].clearAnimation();
-            hearts[hearts.length - lives - 1].setRotation(0);hearts[hearts.length - lives - 1].setScaleX(1);hearts[hearts.length - lives - 1].setScaleY(1);
-            hearts[hearts.length - lives - 1].animate().setListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    hearts[hearts.length - temp - 1].setVisibility(View.INVISIBLE);
-                    hearts[hearts.length - temp - 1].setScaleX(1);
-                    hearts[hearts.length - temp - 1].setScaleY(1);
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-
-                }
-            }).setDuration(500).setStartDelay(0).scaleY(0).scaleX(0).rotation(360).setInterpolator(new BounceInterpolator()).start();
+            hearts[hearts.length - lives - 1].setVisible(false);
         } else {
             coins++;
         }
@@ -121,7 +97,7 @@ class CarController {
     public void reset(){
         for(int i = 0 ; i < hearts.length ; i++) {
             hearts[i].setVisibility(View.VISIBLE);hearts[i].setRotation(-360);hearts[i].setScaleX(0);hearts[i].setScaleY(0);
-            hearts[i].animate().setDuration(400).scaleX(1).scaleY(1).rotation(0).setInterpolator(new BounceInterpolator()).setStartDelay(i*500).start();
+            hearts[i].animate().setDuration(700).scaleX(1).scaleY(1).rotation(0).setInterpolator(new BounceInterpolator()).setStartDelay(i*500).start();
         }
         lives = hearts.length;
         pos = lanes.length/2;

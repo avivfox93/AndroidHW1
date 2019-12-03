@@ -14,13 +14,14 @@
         android:supportsRtl="false"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ScoreBoard"/>
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".ScoreBoard" />
         <activity android:name=".SettingsActivity" />
         <activity
             android:name=".MainGameActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashScreen"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
