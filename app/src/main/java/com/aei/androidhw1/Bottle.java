@@ -26,11 +26,18 @@ public class Bottle extends GameObject {
         init();
     }
 
+
+    /**
+     * For next assignment
+     */
     public void setAsArak(){
         this.setImageResource(R.drawable.ic_vodka);
         this.collidePower = 1;
     }
 
+    /**
+     * Make this Bottle a vodka bottle
+     */
     public void setAsVodka(){
         this.setImageResource(R.drawable.ic_vodka);
         this.collidePower = -1;
@@ -40,6 +47,9 @@ public class Bottle extends GameObject {
         return collidePower == -1;
     }
 
+    /**
+     * Init the bottle and give him a random rotation
+     */
     private void init(){
         this.setForegroundGravity(Gravity.CENTER);
         this.setScaleType(ImageView.ScaleType.CENTER);

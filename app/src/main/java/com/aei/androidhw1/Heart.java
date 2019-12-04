@@ -22,6 +22,10 @@ public class Heart extends GameObject {
         init();
     }
 
+    /**
+     * Set the visibility of the Heart, when set to false it also use animation to make the hearth disappear
+     * @param visible
+     */
     public void setVisible(boolean visible){
         if(visible){
             setScaleX(1);

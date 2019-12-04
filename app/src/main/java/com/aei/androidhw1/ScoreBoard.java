@@ -44,6 +44,11 @@ public class ScoreBoard extends AppCompatActivity {
         findViewById(R.id.close_btn).setOnClickListener(e-> finish());
     }
 
+    /**
+     * Load ScoreList using SharedPrefs
+     * @param cntx context
+     * @return Sorted ScoreList
+     */
     public static ArrayList<Score> getScoreList(Context cntx){
         String scoresStr = MyApp.getPrefs().getString(cntx.getString(R.string.score_prefs),"");
         ArrayList<Score> scoreList = new ArrayList<>();
@@ -55,6 +60,11 @@ public class ScoreBoard extends AppCompatActivity {
         return scoreList;
     }
 
+    /**
+     * Save ScoreList using SharedPrefs
+     * @param cntx context
+     * @param scoreList ScoreList to save
+     */
     public static void saveScoreList(Context cntx, ArrayList<Score> scoreList){
         if(scoreList.isEmpty())
             return;

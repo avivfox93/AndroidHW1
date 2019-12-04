@@ -25,6 +25,9 @@ public class Car extends GameObject{
         init();
     }
 
+    /**
+     * Init the Car object
+     */
     private void init(){
         this.setImageResource(R.drawable.pickup_truck);
         this.setScaleType(ImageView.ScaleType.CENTER);
@@ -32,6 +35,9 @@ public class Car extends GameObject{
     }
 }
 
+/**
+ * Manage the car movement and lives
+ */
 class CarController {
     private GameObject[] lanes;
     private Heart[] hearts;
@@ -42,6 +48,12 @@ class CarController {
         RIGHT,LEFT
     }
 
+    /**
+     *
+     * @param lanes GameObject Array that represents the car lanes
+     * @param hearts Heart Array that contains the lives of the car
+     * @param collideSound MediaPlayer that initialized with collide sound
+     */
     public CarController(GameObject[] lanes, Heart[] hearts, MediaPlayer collideSound){
         this.lanes = lanes;
         this.hearts = hearts;
@@ -57,6 +69,10 @@ class CarController {
         return lives;
     }
 
+    /**
+     * Move the Car one step in dir direction
+     * @param dir can be LEFT or RIGHT
+     */
     public void move(Direction dir){
         if(dir == Direction.RIGHT && pos >= lanes.length-1)
             return;
@@ -75,6 +91,10 @@ class CarController {
         MyApp.getVibrator().vibrate(50);
     }
 
+    /**
+     * Collide the Car with a Bottle
+     * @param bottle
+     */
     public void collide(Bottle bottle){
         if(bottle.getVisibility() == View.INVISIBLE)
             return;
@@ -94,11 +114,12 @@ class CarController {
         }
     }
 
+    /**
+     * Resets the car lives and position the car in the middle lane
+     */
     public void reset(){
-        for(int i = 0 ; i < hearts.length ; i++) {
-            hearts[i].setVisibility(View.VISIBLE);hearts[i].setRotation(-360);hearts[i].setScaleX(0);hearts[i].setScaleY(0);
-            hearts[i].animate().setDuration(700).scaleX(1).scaleY(1).rotation(0).setInterpolator(new BounceInterpolator()).setStartDelay(i*500).start();
-        }
+        for(Heart heart : hearts)
+            heart.setVisible(true);
         lives = hearts.length;
         pos = lanes.length/2;
         lanes[pos].setVisibility(View.VISIBLE);

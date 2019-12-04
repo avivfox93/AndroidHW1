@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -107,6 +106,9 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
         carController = new CarController(roadObjects[NUM_OF_ROWS],hearts,collidePlayer);
     }
 
+    /**
+     * Init the Hearts Array
+     */
     private void initLives(){
         LinearLayout heartsLayout = findViewById(R.id.hearts_layout);
         heartsLayout.removeAllViews();
@@ -117,6 +119,10 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
         }
     }
 
+    /**
+     * Show End Game Window and get player name if he made it to top 10 in scoreboard
+     * @param visible show/hide
+     */
     private void showEndGameWindow(boolean visible){
         int val = visible ? View.VISIBLE : View.INVISIBLE;
         restartButton.setVisibility(val);
@@ -144,11 +150,17 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
         }
     }
 
+    /**
+     * Open ScoreBoard Activity
+     */
     private void openScoreBoard(){
         Intent intent = new Intent(this, ScoreBoard.class);
         startActivity(intent);
     }
 
+    /**
+     * End Game, stop music and show End Game Window
+     */
     private void endGame(){
         stopGame();
         backgroundPlayer.seekTo(0);
@@ -157,12 +169,18 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
         ended = true;
     }
 
+    /**
+     * Stop the game and pause music
+     */
     private void stopGame(){
         paused = true;
         nowPlaying = false;
         backgroundPlayer.pause();
     }
 
+    /**
+     * Reset the game, time played, initialize game grid, reset lives and start music from beginning
+     */
     private void resetGame(){
         gameOverPlayer.seekTo(0);
         secondsPlayed = 0;
@@ -172,6 +190,9 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
         initLives();
     }
 
+    /**
+     * Starts the game, start background timed thread and timer thread
+     */
     private void startGame(){
         backgroundPlayer.start();
         nowPlaying = true;
@@ -212,6 +233,9 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
         mHandler.postDelayed(gameTimerRunnable,1000);
     }
 
+    /**
+     * Initialize game grid, sets the Bottle objects and Car objects in their place
+     */
     private void initGrid(){
         gridLayout.removeAllViews();
         int newPos = (int)(Math.random()*(NUM_OF_LANES+1));
@@ -242,6 +266,11 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
         }
     }
 
+    /**
+     * Used for Tilt mode, callback for tilt sensor change and use the value to control game speed
+     * and car position
+     * @param event
+     */
     @Override
     public void onSensorChanged(SensorEvent event) {
         if(event.sensor.getType() != Sensor.TYPE_ACCELEROMETER)
@@ -298,6 +327,11 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
         gameOverPlayer.reset();
     }
 
+    /**
+     * Listener for direction buttons
+     * @param dir LEFT/RIGHT
+     * @return
+     */
     private View.OnTouchListener arrowOnTouchListener(CarController.Direction dir){
         return (v,e)->{
             v.performClick();

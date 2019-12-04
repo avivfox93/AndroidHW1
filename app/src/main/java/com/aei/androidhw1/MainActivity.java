@@ -27,6 +27,12 @@ public class MainActivity extends AppCompatActivity {
         scoreBoardBtn.setOnClickListener(e->openScoreBoard());
     }
 
+    /**
+     *
+     * @param type GameSpeed(SLOW, NORMAL, FAST)
+     * @param sound Sound on/off
+     * @param tilt Tilt mode on/off
+     */
     private void startGame(GameSpeed type, boolean sound, boolean tilt) {
         Intent intent = new Intent(this, MainGameActivity.class);
         intent.putExtra(getString(R.string.speed_prefs), type);
@@ -35,12 +41,17 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Open Settings Activity
+     */
     private void openSettings(){
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
-
+    /**
+     * Open ScoreBoard Activity
+     */
     private void openScoreBoard(){
         Intent intent = new Intent(this, ScoreBoard.class);
         startActivity(intent);
