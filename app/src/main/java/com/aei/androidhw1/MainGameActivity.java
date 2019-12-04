@@ -330,7 +330,7 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
     /**
      * Listener for direction buttons
      * @param dir LEFT/RIGHT
-     * @return
+     * @return return the listener
      */
     private View.OnTouchListener arrowOnTouchListener(CarController.Direction dir){
         return (v,e)->{
