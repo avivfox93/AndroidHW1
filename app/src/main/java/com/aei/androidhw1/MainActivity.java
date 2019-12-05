@@ -1,12 +1,23 @@
 package com.aei.androidhw1;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final int REQUEST_CODE_ALL_PERMISSIONS = 15;
 
     enum GameSpeed {
         FAST, NORMAL, SLOW
@@ -25,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 MyApp.getPrefs().getBoolean(getString(R.string.tilt_mode_prefs),false)));
         settingsBtn.setOnClickListener(e->openSettings());
         scoreBoardBtn.setOnClickListener(e->openScoreBoard());
+        getPermissions();
     }
 
     /**
@@ -55,5 +67,32 @@ public class MainActivity extends AppCompatActivity {
     private void openScoreBoard(){
         Intent intent = new Intent(this, ScoreBoard.class);
         startActivity(intent);
+    }
+
+    public void getPermissions(){
+        // Check whether this app has write external storage permission or not.
+        int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int writeLocationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        ArrayList<String> permissions = new ArrayList<>();
+        if(writeExternalStoragePermission!= PackageManager.PERMISSION_GRANTED)
+            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(writeLocationPermission != PackageManager.PERMISSION_GRANTED)
+            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        if(permissions.size() > 0)
+            ActivityCompat.requestPermissions(this,
+                    permissions.toArray(new String[0]),REQUEST_CODE_ALL_PERMISSIONS);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == REQUEST_CODE_ALL_PERMISSIONS) {
+            int grantResultsLength = grantResults.length;
+            if (!(grantResultsLength > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                Toast.makeText(this, "Please Grant Permissions!",Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }
     }
 }

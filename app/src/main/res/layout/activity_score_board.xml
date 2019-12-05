@@ -35,10 +35,18 @@
         android:padding="20dp"
         android:orientation="vertical">
         <Button
+            android:id="@+id/open_map_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Map"
+            android:backgroundTint="@color/colorMenuButtons"
+            android:textSize="40sp"/>
+        <Button
             android:id="@+id/close_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Close"
+            android:backgroundTint="@color/colorMenuButtons"
             android:textSize="40sp"/>
     </LinearLayout>
 

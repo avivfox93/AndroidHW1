@@ -3,16 +3,22 @@ package com.aei.androidhw1;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class ScoreBoard extends AppCompatActivity {
@@ -42,6 +48,10 @@ public class ScoreBoard extends AppCompatActivity {
             scoreBoardLayout.addView(row);
         }
         findViewById(R.id.close_btn).setOnClickListener(e-> finish());
+        findViewById(R.id.open_map_btn).setOnClickListener(e->{
+            Intent intent = new Intent(this, ScoresMap.class);
+            startActivity(intent);
+        });
     }
 
     /**
@@ -50,12 +60,18 @@ public class ScoreBoard extends AppCompatActivity {
      * @return Sorted ScoreList
      */
     public static ArrayList<Score> getScoreList(Context cntx){
-        String scoresStr = MyApp.getPrefs().getString(cntx.getString(R.string.score_prefs),"");
-        ArrayList<Score> scoreList = new ArrayList<>();
-        if(scoresStr.isEmpty())
-            return scoreList;
-        for(String str : scoresStr.split(","))
-            scoreList.add(Score.fromString(str));
+        Gson gson = new Gson();
+        String scoresStr = MyApp.readScoreList();
+        ArrayList<Score> scoreList = null;
+        try {
+            scoreList = gson.fromJson(scoresStr, new TypeToken<List<Score>>() {
+            }.getType());
+        }catch (RuntimeException e){
+            Log.e("SCORES",scoresStr);
+            e.printStackTrace();
+        }
+        if(scoreList == null)
+            return new ArrayList<>();
         Collections.sort(scoreList);
         return scoreList;
     }
@@ -66,30 +82,26 @@ public class ScoreBoard extends AppCompatActivity {
      * @param scoreList ScoreList to save
      */
     public static void saveScoreList(Context cntx, ArrayList<Score> scoreList){
-        if(scoreList.isEmpty())
-            return;
-        StringBuilder sb = new StringBuilder();
-        sb.append(scoreList.get(0));
-        for(int i = 1 ; i < scoreList.size() ; i++)
-            sb.append(',').append(scoreList.get(i));
-        MyApp.getPrefs().putString(cntx.getString(R.string.score_prefs),sb.toString());
+        Gson gson = new Gson();
+        MyApp.saveScoreList(gson.toJson(scoreList));
     }
 }
 
 class Score implements Comparable<Score>{
     private String name;
     private int time;
+    private MyLocation location;
     public Score(String name, int time){
         this.name = name;
         this.time = time;
     }
-    public static Score fromString(String str){
-        if(!str.contains(":"))
-            return null;
-        String[] arr = str.split(":");
-        String name = arr[0];
-        int time = Integer.valueOf(arr[1]);
-        return new Score(name,time);
+
+    public void setLocation(MyLocation location){
+        this.location = location;
+    }
+
+    public MyLocation getLocation(){
+        return location;
     }
 
     @Override

@@ -7,9 +7,11 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +22,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,6 +52,9 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
     private boolean nowPlaying = true, paused = false, ended = false;
     private MediaPlayer backgroundPlayer, collidePlayer, gameOverPlayer;
     private long secondsPlayed = 0;
+    private MyLocation lastLocation = null;
+
+    private FusedLocationProviderClient fusedLocationClient;
 
     private CarController carController;
 
@@ -104,6 +112,7 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
         }
         resetGame();
         carController = new CarController(roadObjects[NUM_OF_ROWS],hearts,collidePlayer);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
     /**
@@ -141,6 +150,8 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
             alertDialogBuilder.setCancelable(false).setPositiveButton(android.R.string.ok,(dialog, which) -> {
                 dialog.dismiss();
                 score.setName(input.getText().toString().replace(",","").replace(":",""));
+                score.setLocation(lastLocation);
+                Log.e("LOCATION","Got LOC " + score.getLocation().toString());
                 if(scores.size() >= 10)
                     scores.remove(9);
                 scores.add(score);
@@ -210,7 +221,7 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
                     for (int j = 0; j < NUM_OF_LANES; j++)
                         roadObjects[i][j].setVisibility(roadObjects[i - 1][j].getVisibility());
                 }
-                int newPos = (int)(Math.random()*(NUM_OF_LANES+1));
+                int newPos = (int)(Math.random()*(NUM_OF_LANES));
                 for(int i = 0 ; i < NUM_OF_LANES ; i++){
                     roadObjects[0][i].setVisibility(newPos == i ? View.VISIBLE : View.INVISIBLE);
                 }
@@ -308,11 +319,12 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
             resetGame();
         startGame();
         paused = false;
-        if(sensorManager == null)
-            return;
-        // Register this class as a listener for the accelerometer sensor
-        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL);
+        if(sensorManager != null)
+            sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(location -> this.lastLocation =
+                        new MyLocation(location.getLatitude(),location.getLongitude()));
     }
 
     @Override
