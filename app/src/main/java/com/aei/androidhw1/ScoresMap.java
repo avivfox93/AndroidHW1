@@ -15,8 +15,6 @@ import com.google.gson.Gson;
 
 public class ScoresMap extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +22,9 @@ public class ScoresMap extends FragmentActivity implements OnMapReadyCallback {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
     }
 
 
@@ -38,7 +38,6 @@ public class ScoresMap extends FragmentActivity implements OnMapReadyCallback {
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
         // Add a marker in Sydney and move the camera
         int i = 1;
         LatLng pos = null;
@@ -46,10 +45,10 @@ public class ScoresMap extends FragmentActivity implements OnMapReadyCallback {
             if(score.getLocation() == null)
                 continue;
             pos = new LatLng(score.getLocation().getLat(),score.getLocation().getLon());
-            mMap.addMarker(new MarkerOptions().position(pos).title(i + ") " + score.getName()));
+            googleMap.addMarker(new MarkerOptions().position(pos).title(i + ") " + score.getName()));
         }
         if(pos != null) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos,mMap.getMaxZoomLevel()/2));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, googleMap.getMaxZoomLevel()/2));
         }
     }
 }

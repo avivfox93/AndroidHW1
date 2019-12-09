@@ -124,4 +124,8 @@ class CarController {
         pos = lanes.length/2;
         lanes[pos].setVisibility(View.VISIBLE);
     }
+
+    public int getCoins(){
+        return coins;
+    }
 }

@@ -44,17 +44,16 @@
         android:layout_marginLeft="15dp"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/coins_counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="27dp"
             android:textSize="25sp"
-            android:text="0X"
-            android:visibility="invisible"/>
+            android:text="0X" />
         <ImageView
             android:layout_width="60dp"
             android:layout_height="90dp"
-            app:srcCompat="@drawable/ic_vodka"
-            android:visibility="invisible"/>
+            app:srcCompat="@drawable/ic_arak" />
     </LinearLayout>
 
     <LinearLayout

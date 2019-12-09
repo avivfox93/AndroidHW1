@@ -28,6 +28,7 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +38,7 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
 
     public static final int NUM_OF_LIVES = 3;
     public static final long GAME_SPEED_FAST = 750, GAME_SPEED_SLOW = 1500, GAME_SPEED_NORMAL = 1000;
-    public static final int NUM_OF_LANES = 3;
+    public static final int NUM_OF_LANES = 5;
     public static final int NUM_OF_ROWS = 4;
     private GameObject[][] roadObjects = new GameObject[NUM_OF_ROWS + 1][NUM_OF_LANES];
     private GridLayout gridLayout;
@@ -151,7 +152,6 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
                 dialog.dismiss();
                 score.setName(input.getText().toString().replace(",","").replace(":",""));
                 score.setLocation(lastLocation);
-                Log.e("LOCATION","Got LOC " + score.getLocation().toString());
                 if(scores.size() >= 10)
                     scores.remove(9);
                 scores.add(score);
@@ -213,17 +213,31 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
             runOnUiThread(()->{
                 for(int i = 0 ; i < NUM_OF_LANES ; i++){
                     Bottle obj = (Bottle)roadObjects[NUM_OF_ROWS-1][i];
-                    if(carController.getPos() == i)
+                    if(carController.getPos() == i) {
                         carController.collide(obj);
+                        setCoins(carController.getCoins());
+                    }
                     obj.setVisibility(View.INVISIBLE);
                 }
                 for(int i = NUM_OF_ROWS - 1 ; i > 0 ; i--) {
-                    for (int j = 0; j < NUM_OF_LANES; j++)
-                        roadObjects[i][j].setVisibility(roadObjects[i - 1][j].getVisibility());
+                    for (int j = 0; j < NUM_OF_LANES; j++) {
+                        Bottle bottle = (Bottle)roadObjects[i][j];
+                        bottle.setVisibility(roadObjects[i - 1][j].getVisibility());
+                        if(((Bottle)roadObjects[i - 1][j]).isVodka())
+                            bottle.setAsVodka();
+                        else
+                            bottle.setAsArak();
+                    }
                 }
                 int newPos = (int)(Math.random()*(NUM_OF_LANES));
+                boolean newIsVodka = ((int)(Math.random()*4)) != 1;
                 for(int i = 0 ; i < NUM_OF_LANES ; i++){
-                    roadObjects[0][i].setVisibility(newPos == i ? View.VISIBLE : View.INVISIBLE);
+                    Bottle newBottle = (Bottle)roadObjects[0][i];
+                    newBottle.setVisibility(newPos == i ? View.VISIBLE : View.INVISIBLE);
+                    if(newIsVodka)
+                        newBottle.setAsVodka();
+                    else
+                        newBottle.setAsArak();
                 }
                 if(carController.getLives() <= 0)
                     endGame();
@@ -298,6 +312,14 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
             gameSpeed = GAME_SPEED_FAST;
         else
             gameSpeed = GAME_SPEED_NORMAL;
+    }
+
+    /**
+     * update the coins counter
+     * @param coins new value of coins
+     */
+    private void setCoins(int coins){
+        ((TextView)findViewById(R.id.coins_counter)).setText(String.format(Locale.ENGLISH,"%dX",coins));
     }
 
     @Override

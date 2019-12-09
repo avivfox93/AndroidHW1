@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 public class Bottle extends GameObject {
 
-    private int collidePower;
+    boolean isVodka;
 
     public Bottle(Context context) {
         super(context);
@@ -31,8 +31,8 @@ public class Bottle extends GameObject {
      * For next assignment
      */
     public void setAsArak(){
-        this.setImageResource(R.drawable.ic_vodka);
-        this.collidePower = 1;
+        this.setImageResource(R.drawable.ic_arak);
+        this.isVodka = false;
     }
 
     /**
@@ -40,11 +40,11 @@ public class Bottle extends GameObject {
      */
     public void setAsVodka(){
         this.setImageResource(R.drawable.ic_vodka);
-        this.collidePower = -1;
+        this.isVodka = true;
     }
 
     public boolean isVodka(){
-        return collidePower == -1;
+        return isVodka;
     }
 
     /**
@@ -54,6 +54,8 @@ public class Bottle extends GameObject {
         this.setForegroundGravity(Gravity.CENTER);
         this.setScaleType(ImageView.ScaleType.CENTER);
         this.setRotation((float)(Math.random()*20 - 10));
+        this.isVodka = true;
+        this.setAsVodka();
     }
 }
 
