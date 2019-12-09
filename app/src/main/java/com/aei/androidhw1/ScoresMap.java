@@ -45,7 +45,7 @@ public class ScoresMap extends FragmentActivity implements OnMapReadyCallback {
             if(score.getLocation() == null)
                 continue;
             pos = new LatLng(score.getLocation().getLat(),score.getLocation().getLon());
-            googleMap.addMarker(new MarkerOptions().position(pos).title(i + ") " + score.getName()));
+            googleMap.addMarker(new MarkerOptions().position(pos).title((i++) + ") " + score.getName()));
         }
         if(pos != null) {
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, googleMap.getMaxZoomLevel()/2));
