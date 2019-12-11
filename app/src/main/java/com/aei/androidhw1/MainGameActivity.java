@@ -299,6 +299,13 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
     }
 
     @Override
+    protected void onPause(){
+        super.onPause();
+        if(sensorManager != null)
+            sensorManager.unregisterListener(this);
+    }
+
+    @Override
     protected void onResume()
     {
         super.onResume();
@@ -308,10 +315,9 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
             resetGame();
         startGame();
         paused = false;
-        if(sensorManager == null)
-            return;
+        if(sensorManager != null)
         // Register this class as a listener for the accelerometer sensor
-        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+            sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
     }
 
