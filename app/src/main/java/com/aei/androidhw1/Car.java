@@ -121,6 +121,7 @@ class CarController {
         for(Heart heart : hearts)
             heart.setVisible(true);
         lives = hearts.length;
+        coins = 0;
         pos = lanes.length/2;
         lanes[pos].setVisibility(View.VISIBLE);
     }

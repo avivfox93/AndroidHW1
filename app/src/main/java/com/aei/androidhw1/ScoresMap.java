@@ -45,6 +45,7 @@ public class ScoresMap extends FragmentActivity implements OnMapReadyCallback {
             if(score.getLocation() == null)
                 continue;
             pos = new LatLng(score.getLocation().getLat(),score.getLocation().getLon());
+            MarkerOptions m;
             googleMap.addMarker(new MarkerOptions().position(pos).title((i++) + ") " + score.getName()));
         }
         if(pos != null) {

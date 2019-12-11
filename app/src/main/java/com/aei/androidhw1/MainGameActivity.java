@@ -197,6 +197,7 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
         secondsPlayed = 0;
         ended = false;
         ((TextView)findViewById(R.id.TimerText)).setText(MyApp.getDateFormatter().format(new Date(0)));
+        setCoins(0);
         initGrid();
         initLives();
     }
