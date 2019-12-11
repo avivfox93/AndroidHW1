@@ -333,6 +333,13 @@ public class MainGameActivity extends AppCompatActivity implements SensorEventLi
     }
 
     @Override
+    protected void onPause(){
+        super.onPause();
+        if(sensorManager != null)
+            sensorManager.unregisterListener(this);
+    }
+
+    @Override
     protected void onResume()
     {
         super.onResume();
